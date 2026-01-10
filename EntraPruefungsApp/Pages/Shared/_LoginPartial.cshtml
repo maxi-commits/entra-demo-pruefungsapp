@@ -1,0 +1,16 @@
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.OpenIdConnect
+
+<div>
+@if (User.Identity.IsAuthenticated)
+{
+    <span>Angemeldet als: @User.Identity.Name</span>
+    <form method="post" asp-page="/Logout">
+        <button type="submit">Logout</button>
+    </form>
+}
+else
+{
+    <a asp-page="/Login">Login</a>
+}
+</div>
