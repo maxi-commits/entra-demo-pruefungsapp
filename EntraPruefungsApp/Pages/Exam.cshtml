@@ -1,0 +1,53 @@
+@page
+@model EntraPruefungsApp.Pages.ExamModel
+@{
+    ViewData["Title"] = Model.Exam?.Title ?? "Prüfung";
+}
+
+@if (Model.Exam == null)
+{
+    <h1>Prüfung nicht gefunden</h1>
+    <a asp-page="/Exams" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
+}
+else if (Model.Completed)
+{
+    <h1><i class="bi bi-check-circle-fill text-success me-2"></i>Prüfung abgeschlossen</h1>
+    <div class="alert alert-success">
+        <h4>Ergebnis: @Model.CorrectAnswers von @Model.Exam.Questions.Count Fragen richtig</h4>
+        <p>Das entspricht @((int)((double)Model.CorrectAnswers / Model.Exam.Questions.Count * 100))%</p>
+    </div>
+    <a asp-page="/Exams" class="btn btn-primary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
+}
+else
+{
+    <h1>@Model.Exam.Title</h1>
+    <p>@Model.Exam.Description</p>
+
+    <form method="post">
+        <input type="hidden" asp-for="ExamId" />
+        
+        @for (int i = 0; i < Model.Exam.Questions.Count; i++)
+        {
+            var question = Model.Exam.Questions[i];
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Frage @(i + 1)</h5>
+                    <p class="card-text">@question.Text</p>
+                    
+                    @for (int j = 0; j < question.Answers.Count; j++)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="Answers[@i]" value="@j" id="question@(i)_answer@(j)" />
+                            <label class="form-check-label" for="question@(i)_answer@(j)">
+                                @question.Answers[j]
+                            </label>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        
+        <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Prüfung abschließen</button>
+        <a asp-page="/Exams" class="btn btn-secondary"><i class="bi bi-x-lg me-1"></i>Abbrechen</a>
+    </form>
+}
