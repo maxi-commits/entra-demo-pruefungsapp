@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Authentication.OpenIdConnect
 
 <div>
-@if (User.Identity.IsAuthenticated)
+@if (User.Identity?.IsAuthenticated == true)
 {
     <span>Angemeldet als: @User.Identity.Name</span>
     <form method="post" asp-page="/Logout">
