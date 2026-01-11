@@ -5,6 +5,14 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Willkommen</h1>
-    <p>Platzhalter</p>
+    <h1>Welcome!</h1>
+    <br/>
+    <h5>Herzlich Willkommen zu unserem Testprojekt zur Demonstration von <a href="http://entra.microsoft.com/">Entra ID</a>.</h5>
+    <br/>
+    @if (User.Identity?.IsAuthenticated != true)
+    {
+        <div class="alert alert-info mt-4 mx-auto" style="max-width: 60%;">
+            <i class="bi bi-info-circle me-2"></i>Bitte melden Sie sich an, um Prüfungen zu absolvieren oder zu bewerten.
+        </div>
+    }
 </div>
