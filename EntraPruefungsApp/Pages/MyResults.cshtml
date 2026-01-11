@@ -1,0 +1,57 @@
+@page
+@model EntraPruefungsApp.Pages.MyResultsModel
+@{
+    ViewData["Title"] = "Meine Ergebnisse";
+}
+
+<h1><i class="bi bi-trophy me-2"></i>Meine Prüfungsergebnisse</h1>
+
+@if (!Model.MyResults.Any())
+{
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>Sie haben noch keine Prüfungen abgelegt.
+    </div>
+}
+else
+{
+    @foreach (var result in Model.MyResults)
+    {
+        var exam = Model.Exams.FirstOrDefault(e => e.Id == result.ExamId);
+        if (exam != null)
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>@exam.Title</h5>
+                    <small class="text-muted">Abgelegt am: @result.Date.ToString("dd.MM.yyyy HH:mm")</small>
+                </div>
+                <div class="card-body">
+                    @if (result.IsGraded)
+                    {
+                        var totalPoints = result.FreeTextScores.Sum();
+                        var maxPoints = exam.Questions.Sum(q => q.MaxPoints);
+                        var percentage = maxPoints > 0 ? (int)((double)totalPoints / maxPoints * 100) : 0;
+                        
+                        <div class="alert alert-@(percentage >= 60 ? "success" : "warning")">
+                            <h6><i class="bi bi-check-circle me-2"></i>Bewertung abgeschlossen</h6>
+                            <p><strong>Gesamtpunktzahl: @totalPoints von @maxPoints Punkten (@percentage%)</strong></p>
+                        </div>
+                        
+                        @if (!string.IsNullOrEmpty(result.ExaminerFeedback))
+                        {
+                            <div class="alert alert-info">
+                                <h6><i class="bi bi-chat-text me-2"></i>Feedback des Prüfers:</h6>
+                                <p>@result.ExaminerFeedback</p>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            <i class="bi bi-clock me-2"></i>Bewertung steht noch aus
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+}

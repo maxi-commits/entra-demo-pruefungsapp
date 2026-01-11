@@ -4,20 +4,42 @@
     ViewData["Title"] = "Prüfungen";
 }
 
-<h1>Verfügbare Prüfungen</h1>
+<h1>@(Model.IsExaminer ? "Prüfungen zur Bewertung" : "Verfügbare Prüfungen")</h1>
 
-<div class="row">
-    @foreach (var exam in Model.Exams)
-    {
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">@exam.Title</h5>
-                    <p class="card-text">@exam.Description</p>
-                    <p class="text-muted">@exam.Questions.Count Fragen</p>
-                    <a asp-page="/Exam" asp-route-id="@exam.Id" class="btn btn-primary"><i class="bi bi-play-circle me-1"></i>Prüfung starten</a>
+@if (Model.IsExaminer)
+{
+    <div class="row">
+        @foreach (var exam in Model.Exams)
+        {
+            var examResultsCount = Model.AllResults.SelectMany(ur => ur.Value).Count(r => r.ExamId == exam.Id);
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@exam.Title</h5>
+                        <p class="card-text">@exam.Description</p>
+                        <p class="text-muted">@examResultsCount abgelegte Prüfungen</p>
+                        <a asp-page="/ExamReview" asp-route-id="@exam.Id" class="btn btn-success"><i class="bi bi-eye me-1"></i>Ergebnisse anzeigen</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var exam in Model.Exams)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@exam.Title</h5>
+                        <p class="card-text">@exam.Description</p>
+                        <p class="text-muted">@exam.Questions.Count Fragen</p>
+                        <a asp-page="/Exam" asp-route-id="@exam.Id" class="btn btn-primary"><i class="bi bi-play-circle me-1"></i>Prüfung starten</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

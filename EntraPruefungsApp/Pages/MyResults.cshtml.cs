@@ -1,39 +1,28 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using EntraPruefungsApp.Services;
 
 namespace EntraPruefungsApp.Pages
 {
     [Authorize(Roles = "User")]
-    public class ExamModel : PageModel
+    public class MyResultsModel : PageModel
     {
         private readonly ExamService _examService;
 
-        public ExamModel(ExamService examService)
+        public MyResultsModel(ExamService examService)
         {
             _examService = examService;
         }
 
-        [BindProperty(SupportsGet = true)]
-        public int Id { get; set; }
+        public List<ExamResult> MyResults { get; set; } = new();
+        public List<Exam> Exams { get; set; } = new();
 
-        [BindProperty]
-        public int ExamId { get; set; }
-
-        [BindProperty]
-        public List<int> Answers { get; set; } = new();
-
-        [BindProperty]
-        public List<string> FreeTextAnswers { get; set; } = new();
-
-        public Exam? Exam { get; set; }
-        public bool Completed { get; set; }
-        public int CorrectAnswers { get; set; }
-
-        private static List<Exam> GetExams()
+        public void OnGet()
         {
-            return new List<Exam>
+            var userId = User.Identity?.Name ?? "anonymous";
+            MyResults = _examService.GetResults(userId).OrderByDescending(r => r.Date).ToList();
+            
+            Exams = new List<Exam>
             {
                 new Exam
                 {
@@ -47,14 +36,16 @@ namespace EntraPruefungsApp.Pages
                             Text = "Was bedeutet CPU?",
                             Answers = new List<string> { "Central Processing Unit", "Computer Processing Unit", "Central Program Unit", "Computer Program Unit" },
                             CorrectAnswer = 0,
-                            Type = QuestionType.MultipleChoice
+                            Type = QuestionType.MultipleChoice,
+                            MaxPoints = 2
                         },
                         new Question
                         {
                             Text = "Welche Programmiersprache wird hauptsächlich für Webentwicklung verwendet?",
                             Answers = new List<string> { "C++", "JavaScript", "Assembly", "COBOL" },
                             CorrectAnswer = 1,
-                            Type = QuestionType.MultipleChoice
+                            Type = QuestionType.MultipleChoice,
+                            MaxPoints = 2
                         },
                         new Question
                         {
@@ -77,14 +68,16 @@ namespace EntraPruefungsApp.Pages
                             Text = "Was ist 2 + 2?",
                             Answers = new List<string> { "3", "4", "5", "6" },
                             CorrectAnswer = 1,
-                            Type = QuestionType.MultipleChoice
+                            Type = QuestionType.MultipleChoice,
+                            MaxPoints = 2
                         },
                         new Question
                         {
-                            Text = "Was ist die Wurzel aus 16?",
+                            Text = "Was ist die Quadratwurzel von 16?",
                             Answers = new List<string> { "2", "4", "8", "16" },
                             CorrectAnswer = 1,
-                            Type = QuestionType.MultipleChoice
+                            Type = QuestionType.MultipleChoice,
+                            MaxPoints = 2
                         },
                         new Question
                         {
@@ -96,73 +89,6 @@ namespace EntraPruefungsApp.Pages
                     }
                 }
             };
-        }
-
-        public void OnGet()
-        {
-            Exam = GetExams().FirstOrDefault(p => p.Id == Id);
-            ExamId = Id;
-        }
-
-        public IActionResult OnPost()
-        {
-            Exam = GetExams().FirstOrDefault(p => p.Id == ExamId);
-            
-            if (Exam == null)
-            {
-                return RedirectToPage("/Exams");
-            }
-
-            // Evaluate answers
-            CorrectAnswers = 0;
-            var mcQuestionIndex = 0;
-            var freeTextIndex = 0;
-            
-            for (int i = 0; i < Exam.Questions.Count; i++)
-            {
-                var question = Exam.Questions[i];
-                if (question.Type == QuestionType.MultipleChoice)
-                {
-                    if (mcQuestionIndex < Answers.Count && Answers[mcQuestionIndex] == question.CorrectAnswer)
-                    {
-                        CorrectAnswers++;
-                    }
-                    mcQuestionIndex++;
-                }
-                else if (question.Type == QuestionType.FreeText)
-                {
-                    freeTextIndex++;
-                }
-            }
-
-            // Save result
-            var userId = User.Identity?.Name ?? "anonymous";
-            _examService.SaveResult(userId, ExamId, Answers, FreeTextAnswers, CorrectAnswers);
-
-            Completed = true;
-            return Page();
-        }
-
-        public int GetMCQuestionIndex(int overallIndex)
-        {
-            int mcIndex = 0;
-            for (int i = 0; i < overallIndex && i < (Exam?.Questions.Count ?? 0); i++)
-            {
-                if (Exam?.Questions[i].Type == QuestionType.MultipleChoice)
-                    mcIndex++;
-            }
-            return mcIndex;
-        }
-
-        public int GetFreeTextQuestionIndex(int overallIndex)
-        {
-            int ftIndex = 0;
-            for (int i = 0; i < overallIndex && i < (Exam?.Questions.Count ?? 0); i++)
-            {
-                if (Exam?.Questions[i].Type == QuestionType.FreeText)
-                    ftIndex++;
-            }
-            return ftIndex;
         }
     }
 }

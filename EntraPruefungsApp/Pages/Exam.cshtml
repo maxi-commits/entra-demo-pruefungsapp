@@ -13,8 +13,8 @@ else if (Model.Completed)
 {
     <h1><i class="bi bi-check-circle-fill text-success me-2"></i>Prüfung abgeschlossen</h1>
     <div class="alert alert-success">
-        <h4>Ergebnis: @Model.CorrectAnswers von @Model.Exam.Questions.Count Fragen richtig</h4>
-        <p>Das entspricht @((int)((double)Model.CorrectAnswers / Model.Exam.Questions.Count * 100))%</p>
+        <h4>Prüfung abgeschlossen</h4>
+        <p>Ihre Prüfung wurde erfolgreich abgeschickt und wird vom Prüfer bewertet.</p>
     </div>
     <a asp-page="/Exams" class="btn btn-primary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
 }
@@ -31,17 +31,24 @@ else
             var question = Model.Exam.Questions[i];
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Frage @(i + 1)</h5>
+                    <h5 class="card-title">Frage @(i + 1) @(question.Type == QuestionType.FreeText ? $"({question.MaxPoints} Punkte)" : "")</h5>
                     <p class="card-text">@question.Text</p>
                     
-                    @for (int j = 0; j < question.Answers.Count; j++)
+                    @if (question.Type == QuestionType.MultipleChoice)
                     {
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="Answers[@i]" value="@j" id="question@(i)_answer@(j)" />
-                            <label class="form-check-label" for="question@(i)_answer@(j)">
-                                @question.Answers[j]
-                            </label>
-                        </div>
+                        @for (int j = 0; j < question.Answers.Count; j++)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Answers[@Model.GetMCQuestionIndex(i)]" value="@j" id="question@(i)_answer@(j)" />
+                                <label class="form-check-label" for="question@(i)_answer@(j)">
+                                    @question.Answers[j]
+                                </label>
+                            </div>
+                        }
+                    }
+                    else if (question.Type == QuestionType.FreeText)
+                    {
+                        <textarea class="form-control" name="FreeTextAnswers[@Model.GetFreeTextQuestionIndex(i)]" rows="4" placeholder="Ihre Antwort hier eingeben..."></textarea>
                     }
                 </div>
             </div>
