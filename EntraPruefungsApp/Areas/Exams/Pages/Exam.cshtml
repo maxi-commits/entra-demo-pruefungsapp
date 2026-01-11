@@ -1,5 +1,6 @@
 @page
-@model EntraPruefungsApp.Pages.ExamModel
+@using EntraPruefungsApp.Models
+@model EntraPruefungsApp.Areas.Exams.Pages.ExamModel
 @{
     ViewData["Title"] = Model.Exam?.Title ?? "Prüfung";
 }
@@ -7,7 +8,7 @@
 @if (Model.Exam == null)
 {
     <h1>Prüfung nicht gefunden</h1>
-    <a asp-page="/Exams" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
+    <a href="/exams" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
 }
 else if (Model.Completed)
 {
@@ -16,7 +17,7 @@ else if (Model.Completed)
         <h4>Prüfung abgeschlossen</h4>
         <p>Ihre Prüfung wurde erfolgreich abgeschickt und wird vom Prüfer bewertet.</p>
     </div>
-    <a asp-page="/Exams" class="btn btn-primary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
+    <a href="/exams" class="btn btn-primary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
 }
 else
 {
@@ -55,6 +56,6 @@ else
         }
         
         <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Prüfung abschließen</button>
-        <a asp-page="/Exams" class="btn btn-secondary"><i class="bi bi-x-lg me-1"></i>Abbrechen</a>
+        <a href="/exams" class="btn btn-secondary"><i class="bi bi-x-lg me-1"></i>Abbrechen</a>
     </form>
 }

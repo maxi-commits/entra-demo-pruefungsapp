@@ -12,7 +12,21 @@ builder.Services
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<ExamService>();
 
-builder.Services.AddRazorPages()
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AddAreaFolderRouteModelConvention("Exams", "/", model =>
+    {
+        foreach (var selector in model.Selectors.ToList())
+        {
+            model.Selectors.Remove(selector);
+        }
+    });
+    
+    options.Conventions.AddAreaPageRoute("Exams", "/Index", "exams");
+    options.Conventions.AddAreaPageRoute("Exams", "/MyResults", "myresults");
+    options.Conventions.AddAreaPageRoute("Exams", "/Exam", "exam/{id:int}");
+    options.Conventions.AddAreaPageRoute("Exams", "/ExamReview", "examreview/{id:int}");
+})
     .AddMicrosoftIdentityUI();
 
 var app = builder.Build();

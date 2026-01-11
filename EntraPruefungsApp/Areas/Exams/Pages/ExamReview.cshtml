@@ -1,5 +1,6 @@
 @page
-@model EntraPruefungsApp.Pages.ExamReviewModel
+@using EntraPruefungsApp.Models
+@model EntraPruefungsApp.Areas.Exams.Pages.ExamReviewModel
 @{
     ViewData["Title"] = Model.Exam?.Title ?? "Prüfungsbewertung";
 }
@@ -11,14 +12,14 @@
     <div class="alert alert-danger">
         <i class="bi bi-exclamation-triangle me-2"></i>Prüfung nicht gefunden.
     </div>
-    <a asp-page="/Exams" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
+    <a href="/exams" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
 }
 else if (!Model.ExamResults.Any())
 {
     <div class="alert alert-info">
         <i class="bi bi-info-circle me-2"></i>Für diese Prüfung liegen noch keine Ergebnisse vor.
     </div>
-    <a asp-page="/Exams" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
+    <a href="/exams" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
 }
 else
 {
@@ -168,5 +169,5 @@ else
         </div>
     }
     
-    <a asp-page="/Exams" class="btn btn-primary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
+    <a href="/exams" class="btn btn-primary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
 }

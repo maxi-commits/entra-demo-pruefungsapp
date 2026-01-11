@@ -1,15 +1,16 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using EntraPruefungsApp.Services;
+using EntraPruefungsApp.Models;
 
-namespace EntraPruefungsApp.Pages
+namespace EntraPruefungsApp.Areas.Exams.Pages
 {
     [Authorize(Roles = "User,Examiner")]
-    public class ExamsModel : PageModel
+    public class IndexModel : PageModel
     {
         private readonly ExamService _examService;
 
-        public ExamsModel(ExamService examService)
+        public IndexModel(ExamService examService)
         {
             _examService = examService;
         }
@@ -89,29 +90,5 @@ namespace EntraPruefungsApp.Pages
                 AllResults = _examService.GetAllResults();
             }
         }
-    }
-
-    public class Exam
-    {
-        public int Id { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public List<Question> Questions { get; set; } = new();
-    }
-
-    public class Question
-    {
-        public string Text { get; set; } = string.Empty;
-        public List<string> Answers { get; set; } = new();
-        public int CorrectAnswer { get; set; }
-        public QuestionType Type { get; set; } = QuestionType.MultipleChoice;
-        public string? OptimalAnswer { get; set; }
-        public int MaxPoints { get; set; } = 1;
-    }
-
-    public enum QuestionType
-    {
-        MultipleChoice,
-        FreeText
     }
 }

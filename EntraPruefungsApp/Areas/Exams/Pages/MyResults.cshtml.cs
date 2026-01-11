@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using EntraPruefungsApp.Services;
+using EntraPruefungsApp.Models;
 
-namespace EntraPruefungsApp.Pages
+namespace EntraPruefungsApp.Areas.Exams.Pages
 {
     [Authorize(Roles = "User")]
     public class MyResultsModel : PageModel

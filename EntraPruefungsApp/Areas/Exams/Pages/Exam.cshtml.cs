@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using EntraPruefungsApp.Services;
+using EntraPruefungsApp.Models;
 
-namespace EntraPruefungsApp.Pages
+namespace EntraPruefungsApp.Areas.Exams.Pages
 {
     [Authorize(Roles = "User")]
     public class ExamModel : PageModel
@@ -110,7 +111,7 @@ namespace EntraPruefungsApp.Pages
             
             if (Exam == null)
             {
-                return RedirectToPage("/Exams");
+                return RedirectToPage("/Index", new { area = "Exams" });
             }
 
             // Evaluate answers

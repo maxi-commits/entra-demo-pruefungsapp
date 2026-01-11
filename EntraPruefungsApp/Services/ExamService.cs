@@ -1,3 +1,5 @@
+using EntraPruefungsApp.Models;
+
 namespace EntraPruefungsApp.Services
 {
     public class ExamService
@@ -48,18 +50,5 @@ namespace EntraPruefungsApp.Services
         {
             return _results;
         }
-    }
-
-    public class ExamResult
-    {
-        public int ExamId { get; set; }
-        public List<int> Answers { get; set; } = new();
-        public List<string> FreeTextAnswers { get; set; } = new();
-        public int CorrectAnswers { get; set; }
-        public DateTime Date { get; set; }
-        public string UserId { get; set; } = string.Empty;
-        public bool IsGraded { get; set; } = false;
-        public List<int> FreeTextScores { get; set; } = new();
-        public string? ExaminerFeedback { get; set; }
     }
 }
