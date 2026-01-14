@@ -23,7 +23,7 @@
                         @if (User.IsInRole("User") || User.IsInRole("Examiner"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="/exams"><i class="bi bi-clipboard-check me-1"></i>Prüfungen</a>
+                                <a class="nav-link text-dark" href="/exams"><i class="bi bi-clipboard-check me-1"></i>@(User.IsInRole("Examiner") ? "Bewerten" : "Prüfungen")</a>
                             </li>
                         }
                         @if (User.IsInRole("User"))
