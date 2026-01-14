@@ -12,13 +12,13 @@
     <div class="row">
         @foreach (var exam in Model.Exams)
         {
-            var examResultsCount = Model.AllResults.SelectMany(ur => ur.Value).Count(r => r.ExamId == exam.Id);
+            var examResultsCount = Model.AllResults.SelectMany(ur => ur.Value).Count(r => r.ExamId == exam.Id && !r.IsGraded);
             <div class="col-md-4 mb-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">@exam.Title</h5>
                         <p class="card-text">@exam.Description</p>
-                        <p class="text-muted">@examResultsCount abgelegte Prüfungen</p>
+                        <p class="text-muted">@examResultsCount zu bewertende Prüfungen</p>
                         <a href="/examreview/@exam.Id" class="btn btn-success"><i class="bi bi-pencil-square me-1"></i>Prüfung bewerten</a>
                     </div>
                 </div>

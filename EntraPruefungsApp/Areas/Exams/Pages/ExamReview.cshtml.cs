@@ -107,7 +107,7 @@ namespace EntraPruefungsApp.Areas.Exams.Pages
             {
                 var allResults = _examService.GetAllResults();
                 ExamResults = allResults.SelectMany(ur => ur.Value)
-                                      .Where(r => r.ExamId == Id)
+                                      .Where(r => r.ExamId == Id && !r.IsGraded)
                                       .OrderByDescending(r => r.Date)
                                       .ToList();
             }
@@ -149,6 +149,7 @@ namespace EntraPruefungsApp.Areas.Exams.Pages
                         }
                         
                         _examService.UpdateGrading(userId, Id, examDate, allScores, ExaminerFeedback);
+                        TempData["GradingSuccess"] = true;
                     }
                 }
             }

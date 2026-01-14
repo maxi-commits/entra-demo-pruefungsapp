@@ -7,7 +7,17 @@
 
 <h1><i class="bi bi-clipboard-check me-2"></i>@Model.Exam?.Title - Bewertung</h1>
 
-@if (Model.Exam == null)
+@if (TempData["GradingSuccess"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-2"></i><strong>Bewertung erfolgreich gespeichert!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div class="text-center mb-4">
+        <a href="/exams" class="btn btn-primary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Bewertungsübersicht</a>
+    </div>
+}
+else if (Model.Exam == null)
 {
     <div class="alert alert-danger">
         <i class="bi bi-exclamation-triangle me-2"></i>Prüfung nicht gefunden.
@@ -17,7 +27,7 @@
 else if (!Model.ExamResults.Any())
 {
     <div class="alert alert-info">
-        <i class="bi bi-info-circle me-2"></i>Für diese Prüfung liegen noch keine Ergebnisse vor.
+        <i class="bi bi-info-circle me-2"></i>Es liegen aktuell keine Prüfungen zur Bewertung vor.
     </div>
     <a href="/exams" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Zurück zur Übersicht</a>
 }
@@ -34,26 +44,6 @@ else
                 <p class="mb-0 text-muted">Abgelegt am: @result.Date.ToString("dd.MM.yyyy HH:mm")</p>
             </div>
             <div class="card-body">
-                @if (result.IsGraded)
-                {
-                    var totalPoints = result.FreeTextScores.Sum();
-                    var maxPoints = Model.Exam.Questions.Sum(q => q.MaxPoints);
-                    var percentage = maxPoints > 0 ? (int)((double)totalPoints / maxPoints * 100) : 0;
-                    
-                    <div class="alert alert-@(percentage >= 60 ? "success" : "warning") mb-3">
-                        <strong>Bewertung: @totalPoints von @maxPoints Punkten (@percentage%)</strong>
-                        @if (!string.IsNullOrEmpty(result.ExaminerFeedback))
-                        {
-                            <br><em>Feedback: @result.ExaminerFeedback</em>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <div class="alert alert-warning mb-3">
-                        <strong>Bewertung steht noch aus</strong>
-                    </div>
-                }
                 
                 @for (int i = 0; i < Model.Exam.Questions.Count; i++)
                 {
@@ -133,9 +123,6 @@ else
                         <input type="hidden" name="userId" value="@result.UserId" />
                         <input type="hidden" name="examDate" value="@result.Date" />
                         
-                        <div class="alert alert-info mb-3">
-                            <strong>Bewertung:</strong> Multiple Choice Fragen erhalten automatisch @Model.Exam.Questions.First(q => q.Type == QuestionType.MultipleChoice).MaxPoints Punkte bei richtiger Antwort.
-                        </div>
                         
                         @{
                             var ftQuestionIndex = 0;
