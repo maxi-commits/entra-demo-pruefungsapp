@@ -31,10 +31,10 @@ namespace EntraPruefungsApp.Services
             if (_results.ContainsKey(userId))
             {
                 var result = _results[userId].FirstOrDefault(r => r.ExamId == examId && 
-                    Math.Abs((r.Date - examDate).TotalSeconds) < 60);
+                    Math.Abs((r.Date - examDate).TotalSeconds) < 5);
                 if (result != null)
                 {
-                    result.FreeTextScores = allScores;
+                    result.FreeTextScores = new List<int>(allScores);
                     result.ExaminerFeedback = feedback;
                     result.IsGraded = true;
                 }

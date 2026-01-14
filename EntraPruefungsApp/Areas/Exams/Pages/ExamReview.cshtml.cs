@@ -107,7 +107,7 @@ namespace EntraPruefungsApp.Areas.Exams.Pages
             {
                 var allResults = _examService.GetAllResults();
                 ExamResults = allResults.SelectMany(ur => ur.Value)
-                                      .Where(r => r.ExamId == Id && !r.IsGraded)
+                                      .Where(r => r.ExamId == Id)
                                       .OrderByDescending(r => r.Date)
                                       .ToList();
             }
@@ -123,7 +123,7 @@ namespace EntraPruefungsApp.Areas.Exams.Pages
                 if (allResults.ContainsKey(userId))
                 {
                     var result = allResults[userId].FirstOrDefault(r => r.ExamId == Id && 
-                        Math.Abs((r.Date - examDate).TotalSeconds) < 60);
+                        Math.Abs((r.Date - examDate).TotalSeconds) < 5);
                     if (result != null)
                     {
                         var allScores = new List<int>();
@@ -136,7 +136,7 @@ namespace EntraPruefungsApp.Areas.Exams.Pages
                             if (question.Type == QuestionType.MultipleChoice)
                             {
                                 var userAnswer = mcIndex < result.Answers.Count ? result.Answers[mcIndex] : -1;
-                                var score = userAnswer == question.CorrectAnswer ? 2 : 0;
+                                var score = userAnswer == question.CorrectAnswer ? question.MaxPoints : 0;
                                 allScores.Add(score);
                                 mcIndex++;
                             }
