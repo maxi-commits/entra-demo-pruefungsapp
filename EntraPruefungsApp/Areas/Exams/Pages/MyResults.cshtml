@@ -20,7 +20,7 @@ else
         var exam = Model.Exams.FirstOrDefault(e => e.Id == result.ExamId);
         if (exam != null)
         {
-            <div class="card mb-4">
+            <div class="card mb-4 border-2" style="border-width: 2px !important;">
                 <div class="card-header">
                     <h5>@exam.Title</h5>
                     <small class="text-muted">Abgelegt am: @result.Date.ToString("dd.MM.yyyy HH:mm")</small>
@@ -33,7 +33,6 @@ else
                         var percentage = maxPoints > 0 ? (int)((double)totalPoints / maxPoints * 100) : 0;
                         
                         <div class="alert alert-@(percentage >= 60 ? "success" : "warning")">
-                            <h6><i class="bi bi-check-circle me-2"></i>Bewertung abgeschlossen</h6>
                             <p><strong>Gesamtpunktzahl: @totalPoints von @maxPoints Punkten (@percentage%)</strong></p>
                         </div>
                         
