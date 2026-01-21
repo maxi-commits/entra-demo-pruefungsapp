@@ -20,3 +20,13 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.nav-link.active {
+  text-decoration: underline;
+  font-weight: 500;
+}

@@ -12,24 +12,24 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
+            <div class="container-fluid px-4">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">EntraPruefungsApp</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1" style="gap: 1rem;">
                         @if (User.IsInRole("User") || User.IsInRole("Examiner"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="/exams"><i class="bi bi-clipboard-check me-1"></i>@(User.IsInRole("Examiner") ? "Bewerten" : "Prüfungen")</a>
+                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/exams") || Context.Request.Path.StartsWithSegments("/exam") || Context.Request.Path.StartsWithSegments("/examreview") ? "active" : "")" href="/exams"><i class="bi bi-clipboard-check me-1"></i>@(User.IsInRole("Examiner") ? "Bewerten" : "Prüfungen")</a>
                             </li>
                         }
                         @if (User.IsInRole("User"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="/myresults"><i class="bi bi-trophy me-1"></i>Meine Ergebnisse</a>
+                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/myresults") ? "active" : "")" href="/myresults"><i class="bi bi-trophy me-1"></i>Meine Ergebnisse</a>
                             </li>
                         }
                     </ul>
@@ -38,14 +38,14 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container px-4">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div class="container-fluid px-4">
             &copy; 2026 - EntraPruefungsApp
         </div>
     </footer>
