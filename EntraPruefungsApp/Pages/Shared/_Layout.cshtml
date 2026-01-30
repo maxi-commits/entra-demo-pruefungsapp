@@ -20,19 +20,24 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1" style="gap: 1rem;">
-                        @if (User.IsInRole("User") || User.IsInRole("Examiner"))
+                        @if (User.IsInRole("Participant") || User.IsInRole("Examiner") || User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/exams") || Context.Request.Path.StartsWithSegments("/exam") || Context.Request.Path.StartsWithSegments("/examreview") ? "active" : "")" href="/exams"><i class="bi bi-clipboard-check me-1"></i>@(User.IsInRole("Examiner") ? "Bewerten" : "Prüfungen")</a>
+                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/exams") || Context.Request.Path.StartsWithSegments("/exam") || Context.Request.Path.StartsWithSegments("/evaluate") ? "active" : "")" href="/exams"><i class="bi bi-clipboard-check me-1"></i>@(User.IsInRole("Examiner") || User.IsInRole("Admin") ? "Bewerten" : "Prüfungen")</a>
                             </li>
                         }
-                        @if (User.IsInRole("User"))
+                        @if (User.IsInRole("Participant") || User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/myresults") ? "active" : "")" href="/myresults"><i class="bi bi-trophy me-1"></i>Meine Ergebnisse</a>
+                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/results") ? "active" : "")" href="/results"><i class="bi bi-trophy me-1"></i>Meine Ergebnisse</a>
                             </li>
                         }
-                    </ul>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/admin") ? "active" : "")" href="/admin"><i class="bi bi-gear me-1"></i>Admin</a>
+                            </li>
+                        }                    </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
