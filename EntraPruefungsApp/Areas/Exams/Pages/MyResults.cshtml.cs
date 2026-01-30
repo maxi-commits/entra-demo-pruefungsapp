@@ -5,7 +5,7 @@ using EntraPruefungsApp.Models;
 
 namespace EntraPruefungsApp.Areas.Exams.Pages
 {
-    [Authorize(Roles = "User")]
+    [Authorize(Roles = "Participant")]
     public class MyResultsModel : PageModel
     {
         private readonly ExamService _examService;

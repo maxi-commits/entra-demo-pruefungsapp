@@ -26,7 +26,7 @@
                                 <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/exams") || Context.Request.Path.StartsWithSegments("/exam") || Context.Request.Path.StartsWithSegments("/evaluate") ? "active" : "")" href="/exams"><i class="bi bi-clipboard-check me-1"></i>@(User.IsInRole("Examiner") || User.IsInRole("Admin") ? "Bewerten" : "Prüfungen")</a>
                             </li>
                         }
-                        @if (User.IsInRole("Participant") || User.IsInRole("Admin"))
+                        @if (User.IsInRole("Participant"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/results") ? "active" : "")" href="/results"><i class="bi bi-trophy me-1"></i>Meine Ergebnisse</a>

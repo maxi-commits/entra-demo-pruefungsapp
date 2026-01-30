@@ -11,6 +11,7 @@ builder.Services
 
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<ExamService>();
+builder.Services.AddSingleton<UserService>();
 
 builder.Services.AddRazorPages(options =>
 {
@@ -23,9 +24,9 @@ builder.Services.AddRazorPages(options =>
     });
     
     options.Conventions.AddAreaPageRoute("Exams", "/Index", "exams");
-    options.Conventions.AddAreaPageRoute("Exams", "/MyResults", "myresults");
+    options.Conventions.AddAreaPageRoute("Exams", "/MyResults", "results");
     options.Conventions.AddAreaPageRoute("Exams", "/Exam", "exam/{id:int}");
-    options.Conventions.AddAreaPageRoute("Exams", "/ExamReview", "examreview/{id:int}");
+    options.Conventions.AddAreaPageRoute("Exams", "/ExamReview", "evaluate/{id:int}");
 })
     .AddMicrosoftIdentityUI();
 

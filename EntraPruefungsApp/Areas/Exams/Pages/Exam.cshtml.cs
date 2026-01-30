@@ -6,7 +6,7 @@ using EntraPruefungsApp.Models;
 
 namespace EntraPruefungsApp.Areas.Exams.Pages
 {
-    [Authorize(Roles = "User")]
+    [Authorize(Roles = "Participant")]
     public class ExamModel : PageModel
     {
         private readonly ExamService _examService;
