@@ -1,0 +1,30 @@
+@page
+@model AdminModel
+@{
+    ViewData["Title"] = "Admin";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Admin Dashboard</h1>
+        <br/>
+        <h3>Users and Roles</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Roles</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.UsersWithRoles)
+                {
+                    <tr>
+                        <td>@user.Key</td>
+                        <td>@string.Join(", ", user.Value)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
