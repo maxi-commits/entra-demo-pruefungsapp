@@ -13,7 +13,7 @@
             <li><span class="dropdown-item-text">@User.Identity.Name</span></li>
             <li><hr class="dropdown-divider"></li>
             <li class="text-center">
-                <form method="post" asp-area="Auth" asp-page="/Logout" class="d-inline">
+                <form method="post" asp-page="/Auth/Logout" class="d-inline">
                     <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-box-arrow-right me-2"></i>Logout</button>
                 </form>
             </li>
@@ -22,6 +22,6 @@
 }
 else
 {
-    <a asp-area="Auth" asp-page="/Login" class="btn btn-primary"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a>
+    <a asp-page="/Auth/Login" class="btn btn-primary"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a>
 }
 </div>
