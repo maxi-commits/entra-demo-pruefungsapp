@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using EntraPruefungsApp.Services;
 using System.Security.Claims;
 
-namespace EntraPruefungsApp.Features.Admin;
-
-[Authorize(Roles = "Admin")]
-public class AdminModel : PageModel
+namespace EntraPruefungsApp.Pages
+{
+    [Authorize(Roles = "Admin")]
+    public class AdminModel : PageModel
     {
         private readonly UserService _userService;
 
@@ -43,3 +43,4 @@ public class AdminModel : PageModel
             UsersWithRoles = _userService.GetAllUsersWithRoles();
         }
     }
+}

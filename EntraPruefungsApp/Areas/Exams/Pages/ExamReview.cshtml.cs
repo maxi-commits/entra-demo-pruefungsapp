@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using EntraPruefungsApp.Services;
 using EntraPruefungsApp.Models;
 
-namespace EntraPruefungsApp.Features.Exams
+namespace EntraPruefungsApp.Areas.Exams.Pages
 {
-    [Authorize(Roles = "Participant")]
-    public class TakeModel : PageModel
+    [Authorize(Roles = "Examiner,Admin")]
+    public class ExamReviewModel : PageModel
     {
         private readonly ExamService _examService;
 
-        public TakeModel(ExamService examService)
+        public ExamReviewModel(ExamService examService)
         {
             _examService = examService;
         }
@@ -19,18 +19,8 @@ namespace EntraPruefungsApp.Features.Exams
         [BindProperty(SupportsGet = true)]
         public int Id { get; set; }
 
-        [BindProperty]
-        public int ExamId { get; set; }
-
-        [BindProperty]
-        public List<int> Answers { get; set; } = new();
-
-        [BindProperty]
-        public List<string> FreeTextAnswers { get; set; } = new();
-
         public Exam? Exam { get; set; }
-        public bool Completed { get; set; }
-        public int CorrectAnswers { get; set; }
+        public List<ExamResult> ExamResults { get; set; } = new();
 
         private static List<Exam> GetExams()
         {
@@ -48,14 +38,16 @@ namespace EntraPruefungsApp.Features.Exams
                             Text = "Was bedeutet CPU?",
                             Answers = new List<string> { "Central Processing Unit", "Computer Processing Unit", "Central Program Unit", "Computer Program Unit" },
                             CorrectAnswer = 0,
-                            Type = QuestionType.MultipleChoice
+                            Type = QuestionType.MultipleChoice,
+                            MaxPoints = 2
                         },
                         new Question
                         {
                             Text = "Welche Programmiersprache wird hauptsächlich für Webentwicklung verwendet?",
                             Answers = new List<string> { "C++", "JavaScript", "Assembly", "COBOL" },
                             CorrectAnswer = 1,
-                            Type = QuestionType.MultipleChoice
+                            Type = QuestionType.MultipleChoice,
+                            MaxPoints = 2
                         },
                         new Question
                         {
@@ -78,14 +70,16 @@ namespace EntraPruefungsApp.Features.Exams
                             Text = "Was ist 2 + 2?",
                             Answers = new List<string> { "3", "4", "5", "6" },
                             CorrectAnswer = 1,
-                            Type = QuestionType.MultipleChoice
+                            Type = QuestionType.MultipleChoice,
+                            MaxPoints = 2
                         },
                         new Question
                         {
-                            Text = "Was ist die Wurzel aus 16?",
+                            Text = "Was ist die Quadratwurzel von 16?",
                             Answers = new List<string> { "2", "4", "8", "16" },
                             CorrectAnswer = 1,
-                            Type = QuestionType.MultipleChoice
+                            Type = QuestionType.MultipleChoice,
+                            MaxPoints = 2
                         },
                         new Question
                         {
@@ -99,49 +93,67 @@ namespace EntraPruefungsApp.Features.Exams
             };
         }
 
+        [BindProperty]
+        public List<int> FreeTextScores { get; set; } = new();
+
+        [BindProperty]
+        public string? ExaminerFeedback { get; set; }
+
         public void OnGet()
         {
-            Exam = GetExams().FirstOrDefault(p => p.Id == Id);
-            ExamId = Id;
+            Exam = GetExams().FirstOrDefault(e => e.Id == Id);
+            
+            if (Exam != null)
+            {
+                var allResults = _examService.GetAllResults();
+                ExamResults = allResults.SelectMany(ur => ur.Value)
+                                      .Where(r => r.ExamId == Id)
+                                      .OrderByDescending(r => r.Date)
+                                      .ToList();
+            }
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPost(string userId, DateTime examDate)
         {
-            Exam = GetExams().FirstOrDefault(p => p.Id == ExamId);
-            
-            if (Exam == null)
+            Exam = GetExams().FirstOrDefault(e => e.Id == Id);
+            if (Exam != null)
             {
-                return Redirect("/exams");
-            }
-
-            // Evaluate answers
-            CorrectAnswers = 0;
-            var mcQuestionIndex = 0;
-            var freeTextIndex = 0;
-            
-            for (int i = 0; i < Exam.Questions.Count; i++)
-            {
-                var question = Exam.Questions[i];
-                if (question.Type == QuestionType.MultipleChoice)
+                // Get the exam result
+                var allResults = _examService.GetAllResults();
+                if (allResults.ContainsKey(userId))
                 {
-                    if (mcQuestionIndex < Answers.Count && Answers[mcQuestionIndex] == question.CorrectAnswer)
+                    var result = allResults[userId].FirstOrDefault(r => r.ExamId == Id && 
+                        Math.Abs((r.Date - examDate).TotalSeconds) < 5);
+                    if (result != null)
                     {
-                        CorrectAnswers++;
+                        var allScores = new List<int>();
+                        var mcIndex = 0;
+                        var ftIndex = 0;
+                        
+                        for (int i = 0; i < Exam.Questions.Count; i++)
+                        {
+                            var question = Exam.Questions[i];
+                            if (question.Type == QuestionType.MultipleChoice)
+                            {
+                                var userAnswer = mcIndex < result.Answers.Count ? result.Answers[mcIndex] : -1;
+                                var score = userAnswer == question.CorrectAnswer ? question.MaxPoints : 0;
+                                allScores.Add(score);
+                                mcIndex++;
+                            }
+                            else if (question.Type == QuestionType.FreeText)
+                            {
+                                var score = ftIndex < FreeTextScores.Count ? FreeTextScores[ftIndex] : 0;
+                                allScores.Add(score);
+                                ftIndex++;
+                            }
+                        }
+                        
+                        _examService.UpdateGrading(userId, Id, examDate, allScores, ExaminerFeedback);
+                        TempData["GradingSuccess"] = true;
                     }
-                    mcQuestionIndex++;
-                }
-                else if (question.Type == QuestionType.FreeText)
-                {
-                    freeTextIndex++;
                 }
             }
-
-            // Save result
-            var userId = User.Identity?.Name ?? "anonymous";
-            _examService.SaveResult(userId, ExamId, Answers, FreeTextAnswers, CorrectAnswers);
-
-            Completed = true;
-            return Page();
+            return RedirectToPage(new { Id });
         }
 
         public int GetMCQuestionIndex(int overallIndex)

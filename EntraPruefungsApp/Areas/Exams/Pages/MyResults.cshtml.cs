@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using EntraPruefungsApp.Services;
 using EntraPruefungsApp.Models;
 
-namespace EntraPruefungsApp.Features.Exams
+namespace EntraPruefungsApp.Areas.Exams.Pages
 {
     [Authorize(Roles = "Participant")]
     public class MyResultsModel : PageModel
