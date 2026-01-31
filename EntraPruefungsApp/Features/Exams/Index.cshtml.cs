@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using EntraPruefungsApp.Services;
 using EntraPruefungsApp.Models;
 
-namespace EntraPruefungsApp.Areas.Exams.Pages
+namespace EntraPruefungsApp.Features.Exams
 {
     [Authorize(Roles = "Participant,Examiner,Admin")]
     public class IndexModel : PageModel

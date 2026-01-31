@@ -23,24 +23,23 @@ Eine ASP.NET Core Razor Pages Webanwendung zur Demonstration von Microsoft Entra
 
 ```
 EntraPruefungsApp/
-├── Areas/
-│   ├── Auth/          # Login/Logout Seiten
-│   └── Exams/         # Prüfungsbezogene Seiten
-│       └── Pages/
-│           ├── Index.cshtml        # Prüfungsübersicht
-│           ├── Exam.cshtml         # Prüfung durchführen (User)
-│           ├── ExamReview.cshtml   # Bewertung (Examiner)
-│           └── MyResults.cshtml    # Ergebnisse (User)
+├── Features/          # Feature-basierte Organisation
+│   ├── Home/         # Startseite
+│   ├── Auth/         # Login/Logout
+│   ├── Exams/        # Prüfungsfunktionalität
+│   │   ├── Index.cshtml      # Prüfungsübersicht
+│   │   ├── Take.cshtml       # Prüfung durchführen (Participant)
+│   │   ├── Review.cshtml     # Bewertung (Examiner)
+│   │   └── MyResults.cshtml  # Ergebnisse (Participant)
+│   └── Admin/        # Admin-Panel
 ├── Models/
-│   └── ExamModels.cs  # Datenmodelle (Exam, Question, ExamResult)
+│   └── ExamModels.cs # Datenmodelle
 ├── Services/
-│   └── ExamService.cs # In-Memory Datenspeicher
+│   ├── ExamService.cs   # Prüfungsverwaltung
+│   └── UserService.cs   # Benutzerverwaltung
 ├── Pages/
-│   ├── Shared/
-│   │   ├── _Layout.cshtml
-│   │   └── _LoginPartial.cshtml
-│   └── Index.cshtml   # Startseite
-└── Program.cs         # App-Konfiguration
+│   └── Shared/       # Gemeinsame Layouts
+└── Program.cs        # App-Konfiguration
 ```
 
 ## Rollen

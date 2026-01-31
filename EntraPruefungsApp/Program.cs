@@ -15,18 +15,14 @@ builder.Services.AddSingleton<UserService>();
 
 builder.Services.AddRazorPages(options =>
 {
-    options.Conventions.AddAreaFolderRouteModelConvention("Exams", "/", model =>
-    {
-        foreach (var selector in model.Selectors.ToList())
-        {
-            model.Selectors.Remove(selector);
-        }
-    });
-    
-    options.Conventions.AddAreaPageRoute("Exams", "/Index", "exams");
-    options.Conventions.AddAreaPageRoute("Exams", "/MyResults", "results");
-    options.Conventions.AddAreaPageRoute("Exams", "/Exam", "exam/{id:int}");
-    options.Conventions.AddAreaPageRoute("Exams", "/ExamReview", "evaluate/{id:int}");
+    options.Conventions.AddPageRoute("/Features/Home/Index", "");
+    options.Conventions.AddPageRoute("/Features/Auth/Login", "login");
+    options.Conventions.AddPageRoute("/Features/Auth/Logout", "logout");
+    options.Conventions.AddPageRoute("/Features/Exams/Index", "exams");
+    options.Conventions.AddPageRoute("/Features/Exams/Take", "exam/{id:int}");
+    options.Conventions.AddPageRoute("/Features/Exams/Review", "evaluate/{id:int}");
+    options.Conventions.AddPageRoute("/Features/Exams/MyResults", "results");
+    options.Conventions.AddPageRoute("/Features/Admin/Index", "admin");
 })
     .AddMicrosoftIdentityUI();
 

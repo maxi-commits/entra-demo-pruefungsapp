@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace EntraPruefungsApp.Pages;
+namespace EntraPruefungsApp.Features.Home;
 
 public class IndexModel : PageModel
 {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace EntraPruefungsApp.Pages
+namespace EntraPruefungsApp.Features.Auth
 {
     public class LogoutModel : PageModel
     {
@@ -11,7 +11,7 @@ namespace EntraPruefungsApp.Pages
         {
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync("Cookies");
-            return RedirectToPage("/Index");
+            return Redirect("/");
         }
     }
 }
