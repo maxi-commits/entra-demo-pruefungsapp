@@ -15,6 +15,7 @@ builder.Services.AddSingleton<UserService>();
 
 builder.Services.AddRazorPages(options =>
 {
+    options.Conventions.AddPageRoute("/Exams/Index", "exams");
     options.Conventions.AddPageRoute("/Exams/MyResults", "results");
     options.Conventions.AddPageRoute("/Exams/Exam", "participate/exam/{id:int}");
     options.Conventions.AddPageRoute("/Exams/ExamReview", "evaluate/{id:int}");

@@ -23,23 +23,25 @@ Eine ASP.NET Core Razor Pages Webanwendung zur Demonstration von Microsoft Entra
 
 ```
 EntraPruefungsApp/
-├── Areas/
-│   ├── Auth/          # Login/Logout Seiten
-│   └── Exams/         # Prüfungsbezogene Seiten
-│       └── Pages/
-│           ├── Index.cshtml        # Prüfungsübersicht
-│           ├── Exam.cshtml         # Prüfung durchführen (User)
-│           ├── ExamReview.cshtml   # Bewertung (Examiner)
-│           └── MyResults.cshtml    # Ergebnisse (User)
-├── Models/
-│   └── ExamModels.cs  # Datenmodelle (Exam, Question, ExamResult)
-├── Services/
-│   └── ExamService.cs # In-Memory Datenspeicher
 ├── Pages/
+│   ├── Admin/         # Admin-Bereich
+│   │   └── Index.cshtml
+│   ├── Auth/          # Login/Logout Seiten
+│   │   ├── Login.cshtml
+│   │   └── Logout.cshtml
+│   ├── Exams/         # Prüfungsbezogene Seiten
+│   │   ├── Index.cshtml        # Prüfungsübersicht
+│   │   ├── Exam.cshtml         # Prüfung durchführen (User)
+│   │   ├── ExamReview.cshtml   # Bewertung (Examiner)
+│   │   └── MyResults.cshtml    # Ergebnisse (User)
 │   ├── Shared/
 │   │   ├── _Layout.cshtml
 │   │   └── _LoginPartial.cshtml
 │   └── Index.cshtml   # Startseite
+├── Models/
+│   └── ExamModels.cs  # Datenmodelle (Exam, Question, ExamResult)
+├── Services/
+│   └── ExamService.cs # In-Memory Datenspeicher
 └── Program.cs         # App-Konfiguration
 ```
 
@@ -56,9 +58,12 @@ EntraPruefungsApp/
 
 - `/` - Startseite
 - `/exams` - Prüfungsübersicht
-- `/exam/{id}` - Prüfung durchführen
-- `/myresults` - Meine Ergebnisse
-- `/examreview/{id}` - Prüfung bewerten (Examiner)
+- `/participate/exam/{id}` - Prüfung durchführen
+- `/results` - Meine Ergebnisse
+- `/evaluate/{id}` - Prüfung bewerten (Examiner)
+- `/admin` - Admin-Bereich
+- `/login` - Anmeldung
+- `/logout` - Abmeldung
 
 ## Konfiguration
 
