@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using EntraPruefungsApp.Services;
 using System.Security.Claims;
 
-namespace EntraPruefungsApp.Pages
+namespace EntraPruefungsApp.Areas.Admin.Pages
 {
     [Authorize(Roles = "Admin")]
     public class AdminModel : PageModel
