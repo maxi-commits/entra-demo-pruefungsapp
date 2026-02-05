@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,19 +23,19 @@
                         @if (User.IsInRole("Participant") || User.IsInRole("Examiner") || User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/exams") || Context.Request.Path.StartsWithSegments("/exam") || Context.Request.Path.StartsWithSegments("/evaluate") ? "active" : "")" href="/exams"><i class="bi bi-clipboard-check me-1"></i>@(User.IsInRole("Examiner") || User.IsInRole("Admin") ? "Bewerten" : "Prüfungen")</a>
+                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/Exams") ? "active" : "")" asp-page="/Exams/Index"><i class="bi bi-clipboard-check me-1"></i>@(User.IsInRole("Examiner") ? "Bewerten" : "Prüfungen")</a>
                             </li>
                         }
                         @if (User.IsInRole("Participant"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/results") ? "active" : "")" href="/results"><i class="bi bi-trophy me-1"></i>Meine Ergebnisse</a>
+                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/Exams/MyResults") ? "active" : "")" asp-page="/Exams/MyResults"><i class="bi bi-trophy me-1"></i>Meine Ergebnisse</a>
                             </li>
                         }
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/admin") ? "active" : "")" href="/admin"><i class="bi bi-gear me-1"></i>Admin</a>
+                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/Admin") ? "active" : "")" asp-page="/Admin/Index"><i class="bi bi-gear me-1"></i>Admin</a>
                             </li>
                         }                    </ul>
                     <partial name="_LoginPartial" />

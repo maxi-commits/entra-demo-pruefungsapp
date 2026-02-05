@@ -13,15 +13,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddSingleton<ExamService>();
 builder.Services.AddSingleton<UserService>();
 
-builder.Services.AddRazorPages(options =>
-{
-    options.Conventions.AddPageRoute("/Exams/Index", "exams");
-    options.Conventions.AddPageRoute("/Exams/MyResults", "results");
-    options.Conventions.AddPageRoute("/Exams/Exam", "participate/exam/{id:int}");
-    options.Conventions.AddPageRoute("/Exams/ExamReview", "evaluate/{id:int}");
-    options.Conventions.AddPageRoute("/Auth/Login", "login");
-    options.Conventions.AddPageRoute("/Auth/Logout", "logout");
-})
+builder.Services.AddRazorPages()
     .AddMicrosoftIdentityUI();
 
 var app = builder.Build();

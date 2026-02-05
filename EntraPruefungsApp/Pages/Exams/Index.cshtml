@@ -19,7 +19,7 @@
                         <h5 class="card-title">@exam.Title</h5>
                         <p class="card-text">@exam.Description</p>
                         <p class="text-muted">@examResultsCount zu bewertende Prüfungen</p>
-                        <a href="/evaluate/@exam.Id" class="btn btn-success"><i class="bi bi-pencil-square me-1"></i>Prüfung bewerten</a>
+                        <a asp-page="/Exams/ExamReview" asp-route-id="@exam.Id" class="btn btn-success"><i class="bi bi-pencil-square me-1"></i>Prüfung bewerten</a>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@ else
                         <h5 class="card-title">@exam.Title</h5>
                         <p class="card-text">@exam.Description</p>
                         <p class="text-muted">@exam.Questions.Count Fragen</p>
-                        <a href="/participate/exam/@exam.Id" class="btn btn-primary"><i class="bi bi-play-circle me-1"></i>Prüfung starten</a>
+                        <a asp-page="/Exams/Exam" asp-route-id="@exam.Id" class="btn btn-primary"><i class="bi bi-play-circle me-1"></i>Prüfung starten</a>
                     </div>
                 </div>
             </div>
