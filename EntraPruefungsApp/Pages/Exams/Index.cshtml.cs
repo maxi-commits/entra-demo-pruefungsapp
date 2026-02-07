@@ -5,7 +5,7 @@ using EntraPruefungsApp.Models;
 
 namespace EntraPruefungsApp.Areas.Exams.Pages
 {
-    [Authorize(Roles = "Participant,Examiner,Admin")]
+    [Authorize(Roles = "Participant,Examiner")]
     public class IndexModel : PageModel
     {
         private readonly UserService _userService;
@@ -19,7 +19,7 @@ namespace EntraPruefungsApp.Areas.Exams.Pages
 
         public List<Exam> Exams { get; set; } = new();
         public Dictionary<string, List<ExamResult>> AllResults { get; set; } = new();
-        public bool IsExaminer => User.IsInRole("Examiner") || User.IsInRole("Admin");
+        public bool IsExaminer => User.IsInRole("Examiner");
 
         public void OnGet()
         {

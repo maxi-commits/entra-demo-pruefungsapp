@@ -20,7 +20,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1" style="gap: 1rem;">
-                        @if (User.IsInRole("Participant") || User.IsInRole("Examiner") || User.IsInRole("Admin"))
+                        @if (User.IsInRole("Participant") || User.IsInRole("Examiner"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/Exams") ? "active" : "")" asp-page="/Exams/Index"><i class="bi bi-clipboard-check me-1"></i>@(User.IsInRole("Examiner") ? "Bewerten" : "Prüfungen")</a>
