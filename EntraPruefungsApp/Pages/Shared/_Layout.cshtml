@@ -23,7 +23,7 @@
                         @if (User.IsInRole("Participant") || User.IsInRole("Examiner"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/Exams") ? "active" : "")" asp-page="/Exams/Index"><i class="bi bi-clipboard-check me-1"></i>@(User.IsInRole("Examiner") ? "Bewerten" : "Prüfungen")</a>
+                                <a class="nav-link text-dark @(Context.Request.Path.StartsWithSegments("/Exams/Index") || (Context.Request.Path.StartsWithSegments("/Exams") && !Context.Request.Path.StartsWithSegments("/Exams/MyResults") && !Context.Request.Path.StartsWithSegments("/Exams/Exam") && !Context.Request.Path.StartsWithSegments("/Exams/ExamReview")) ? "active" : "")" asp-page="/Exams/Index"><i class="bi bi-clipboard-check me-1"></i>@(User.IsInRole("Examiner") ? "Bewerten" : "Prüfungen")</a>
                             </li>
                         }
                         @if (User.IsInRole("Participant"))
