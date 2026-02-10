@@ -22,77 +22,6 @@ namespace EntraPruefungsApp.Areas.Exams.Pages
         public Exam? Exam { get; set; }
         public List<ExamResult> ExamResults { get; set; } = new();
 
-        private static List<Exam> GetExams()
-        {
-            return new List<Exam>
-            {
-                new Exam
-                {
-                    Id = 1,
-                    Title = "Grundlagen der Informatik",
-                    Description = "Teste dein Wissen über grundlegende IT-Konzepte",
-                    Questions = new List<Question>
-                    {
-                        new Question
-                        {
-                            Text = "Was bedeutet CPU?",
-                            Answers = new List<string> { "Central Processing Unit", "Computer Processing Unit", "Central Program Unit", "Computer Program Unit" },
-                            CorrectAnswer = 0,
-                            Type = QuestionType.MultipleChoice,
-                            MaxPoints = 2
-                        },
-                        new Question
-                        {
-                            Text = "Welche Programmiersprache wird hauptsächlich für Webentwicklung verwendet?",
-                            Answers = new List<string> { "C++", "JavaScript", "Assembly", "COBOL" },
-                            CorrectAnswer = 1,
-                            Type = QuestionType.MultipleChoice,
-                            MaxPoints = 2
-                        },
-                        new Question
-                        {
-                            Text = "Erklären Sie den Unterschied zwischen Frontend und Backend in der Webentwicklung.",
-                            Type = QuestionType.FreeText,
-                            OptimalAnswer = "Frontend ist der sichtbare Teil einer Webanwendung, den Benutzer direkt sehen und mit dem sie interagieren (HTML, CSS, JavaScript). Backend ist der serverseitige Teil, der Datenverarbeitung, Datenbankzugriffe und Geschäftslogik behandelt.",
-                            MaxPoints = 3
-                        }
-                    }
-                },
-                new Exam
-                {
-                    Id = 2,
-                    Title = "Mathematik Grundlagen",
-                    Description = "Einfache mathematische Aufgaben",
-                    Questions = new List<Question>
-                    {
-                        new Question
-                        {
-                            Text = "Was ist 2 + 2?",
-                            Answers = new List<string> { "3", "4", "5", "6" },
-                            CorrectAnswer = 1,
-                            Type = QuestionType.MultipleChoice,
-                            MaxPoints = 2
-                        },
-                        new Question
-                        {
-                            Text = "Was ist die Quadratwurzel von 16?",
-                            Answers = new List<string> { "2", "4", "8", "16" },
-                            CorrectAnswer = 1,
-                            Type = QuestionType.MultipleChoice,
-                            MaxPoints = 2
-                        },
-                        new Question
-                        {
-                            Text = "Beschreiben Sie, wie Sie das Flächeninhalt eines Kreises berechnen.",
-                            Type = QuestionType.FreeText,
-                            OptimalAnswer = "Die Fläche eines Kreises wird mit der Formel A = π × r² berechnet, wobei r der Radius des Kreises ist. Pi (π) ist eine mathematische Konstante mit dem Wert etwa 3,14159.",
-                            MaxPoints = 2
-                        }
-                    }
-                }
-            };
-        }
-
         [BindProperty]
         public List<int> FreeTextScores { get; set; } = new();
 
@@ -101,24 +30,23 @@ namespace EntraPruefungsApp.Areas.Exams.Pages
 
         public void OnGet()
         {
-            Exam = GetExams().FirstOrDefault(e => e.Id == Id);
+            Exam = _examService.GetExam(Id);
             
             if (Exam != null)
             {
-                var allResults = _examService.GetAllResults();
-                ExamResults = allResults.SelectMany(ur => ur.Value)
-                                      .Where(r => r.ExamId == Id)
-                                      .OrderByDescending(r => r.Date)
-                                      .ToList();
+                ExamResults = _examService.GetAllResults()
+                    .SelectMany(ur => ur.Value)
+                    .Where(r => r.ExamId == Id)
+                    .OrderByDescending(r => r.Date)
+                    .ToList();
             }
         }
 
         public IActionResult OnPost(string userId, DateTime examDate)
         {
-            Exam = GetExams().FirstOrDefault(e => e.Id == Id);
+            Exam = _examService.GetExam(Id);
             if (Exam != null)
             {
-                // Get the exam result
                 var allResults = _examService.GetAllResults();
                 if (allResults.ContainsKey(userId))
                 {
@@ -130,20 +58,17 @@ namespace EntraPruefungsApp.Areas.Exams.Pages
                         var mcIndex = 0;
                         var ftIndex = 0;
                         
-                        for (int i = 0; i < Exam.Questions.Count; i++)
+                        foreach (var question in Exam.Questions)
                         {
-                            var question = Exam.Questions[i];
                             if (question.Type == QuestionType.MultipleChoice)
                             {
                                 var userAnswer = mcIndex < result.Answers.Count ? result.Answers[mcIndex] : -1;
-                                var score = userAnswer == question.CorrectAnswer ? question.MaxPoints : 0;
-                                allScores.Add(score);
+                                allScores.Add(userAnswer == question.CorrectAnswer ? question.MaxPoints : 0);
                                 mcIndex++;
                             }
                             else if (question.Type == QuestionType.FreeText)
                             {
-                                var score = ftIndex < FreeTextScores.Count ? FreeTextScores[ftIndex] : 0;
-                                allScores.Add(score);
+                                allScores.Add(ftIndex < FreeTextScores.Count ? FreeTextScores[ftIndex] : 0);
                                 ftIndex++;
                             }
                         }
@@ -160,10 +85,7 @@ namespace EntraPruefungsApp.Areas.Exams.Pages
         {
             int mcIndex = 0;
             for (int i = 0; i < overallIndex && i < (Exam?.Questions.Count ?? 0); i++)
-            {
-                if (Exam?.Questions[i].Type == QuestionType.MultipleChoice)
-                    mcIndex++;
-            }
+                if (Exam?.Questions[i].Type == QuestionType.MultipleChoice) mcIndex++;
             return mcIndex;
         }
 
@@ -171,10 +93,7 @@ namespace EntraPruefungsApp.Areas.Exams.Pages
         {
             int ftIndex = 0;
             for (int i = 0; i < overallIndex && i < (Exam?.Questions.Count ?? 0); i++)
-            {
-                if (Exam?.Questions[i].Type == QuestionType.FreeText)
-                    ftIndex++;
-            }
+                if (Exam?.Questions[i].Type == QuestionType.FreeText) ftIndex++;
             return ftIndex;
         }
     }
