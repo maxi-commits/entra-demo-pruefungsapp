@@ -20,14 +20,16 @@ namespace EntraPruefungsApp.Services
                         Text = "Was beschreibt Authentifizierung am besten?",
                         Answers = new List<string> { "Festlegung, welche Aktionen ein Benutzer ausführen darf", "Verifizierung der Identität eines Benutzers", "Verschlüsselung von Daten während der Übertragung", "Verwaltung von Benutzergruppen" },
                         CorrectAnswer = 1,
-                        Type = QuestionType.MultipleChoice
+                        Type = QuestionType.MultipleChoice,
+                        MaxPoints = 2
                     },
                     new Question
                     {
                         Text = "Worauf basiert ABAC (Attribute-Based Access Control)?",
                         Answers = new List<string> { "Auf Benutzerrollen", "Auf Attributen wie Gerät, Standort oder Uhrzeit", "Auf Passwörtern", "Auf der IP-Adresse" },
                         CorrectAnswer = 1,
-                        Type = QuestionType.MultipleChoice
+                        Type = QuestionType.MultipleChoice,
+                        MaxPoints = 2
                     },
                     new Question
                     {
@@ -50,14 +52,16 @@ namespace EntraPruefungsApp.Services
                         Text = "Was bedeutet CPU?",
                         Answers = new List<string> { "Central Processing Unit", "Computer Processing Unit", "Central Program Unit", "Computer Program Unit" },
                         CorrectAnswer = 0,
-                        Type = QuestionType.MultipleChoice
+                        Type = QuestionType.MultipleChoice,
+                        MaxPoints = 2
                     },
                     new Question
                     {
                         Text = "Welche Programmiersprache wird hauptsächlich für Webentwicklung verwendet?",
                         Answers = new List<string> { "C++", "JavaScript", "Assembly", "COBOL" },
                         CorrectAnswer = 1,
-                        Type = QuestionType.MultipleChoice
+                        Type = QuestionType.MultipleChoice,
+                        MaxPoints = 2
                     },
                     new Question
                     {

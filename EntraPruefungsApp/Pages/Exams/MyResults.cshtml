@@ -33,7 +33,7 @@ else
                         var maxPoints = exam.Questions.Sum(q => q.MaxPoints);
                         var percentage = maxPoints > 0 ? (int)((double)totalPoints / maxPoints * 100) : 0;
                         
-                        <div class="alert alert-@(percentage >= 60 ? "success" : "warning")">
+                        <div class="alert alert-@(percentage >= 60 ? "success" : percentage >= 25 ? "warning" : "danger")">
                             <p><strong>Gesamtpunktzahl: @totalPoints von @maxPoints Punkten (@percentage%)</strong></p>
                         </div>
                         
