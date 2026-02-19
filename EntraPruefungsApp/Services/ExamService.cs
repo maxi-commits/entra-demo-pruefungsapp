@@ -18,7 +18,7 @@ namespace EntraPruefungsApp.Services
                     new Question
                     {
                         Text = "Was beschreibt Authentifizierung am besten?",
-                        Answers = new List<string> { "Festlegung, welche Aktionen ein Benutzer ausführen darf", "Verifizierung der Identität eines Benutzers", "Verschlüsselung von Daten während der Übertragung", "Verwaltung von Benutzergruppen" },
+                        Answers = new List<string> { "Festlegung, welche Aktionen ein Benutzer ausführen darf", "Verifizierung der Identität eines Benutzers", "Verschlüsselung von Daten während der Übertragung" },
                         CorrectAnswer = 1,
                         Type = QuestionType.MultipleChoice,
                         MaxPoints = 2
@@ -26,14 +26,14 @@ namespace EntraPruefungsApp.Services
                     new Question
                     {
                         Text = "Worauf basiert ABAC (Attribute-Based Access Control)?",
-                        Answers = new List<string> { "Auf Benutzerrollen", "Auf Attributen wie Gerät, Standort oder Uhrzeit", "Auf Passwörtern", "Auf der IP-Adresse" },
+                        Answers = new List<string> { "Auf Benutzerrollen", "Auf Attributen wie Gerät, Standort oder Uhrzeit", "Auf Passwörtern" },
                         CorrectAnswer = 1,
                         Type = QuestionType.MultipleChoice,
                         MaxPoints = 2
                     },
                     new Question
                     {
-                        Text = "Was ist Multi-Faktor-Authentifizierung (MFA) und warum ist sie wichtig?",
+                        Text = "Was ist Multi-Faktor-Authentifizierung (MFA)?",
                         Type = QuestionType.FreeText,
                         OptimalAnswer = "MFA kombiniert mehrere Faktoren (Wissen, Besitz, Biometrie) zur Anmeldung. Sie erhöht die Sicherheit, da ein gestohlenes Passwort allein nicht ausreicht.",
                         MaxPoints = 3
