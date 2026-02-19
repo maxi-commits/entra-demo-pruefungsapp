@@ -35,7 +35,7 @@ namespace EntraPruefungsApp.Services
                     {
                         Text = "Was ist Multi-Faktor-Authentifizierung (MFA)?",
                         Type = QuestionType.FreeText,
-                        OptimalAnswer = "MFA kombiniert mehrere Faktoren (Wissen, Besitz, Biometrie) zur Anmeldung. Sie erhöht die Sicherheit, da ein gestohlenes Passwort allein nicht ausreicht.",
+                        OptimalAnswer = "MFA kombiniert mehrere Faktoren (z.B. Wissen, Besitz, Biometrie) zur Anmeldung.",
                         MaxPoints = 3
                     }
                 }
