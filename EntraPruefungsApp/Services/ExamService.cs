@@ -44,7 +44,7 @@ namespace EntraPruefungsApp.Services
             {
                 Id = 2,
                 Title = "Grundlagen der Informatik",
-                Description = "Teste dein Wissen über grundlegende IT-Konzepte",
+                Description = "Teste dein Wissen über IT-Konzepte",
                 Questions = new List<Question>
                 {
                     new Question
