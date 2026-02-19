@@ -37,10 +37,7 @@ else
     
     @foreach (var result in Model.ExamResults)
     {
-        var userName = result.UserId.Split('@')[0];
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5><i class="bi bi-person me-2"></i>Benutzer: @userName</h5>
+                <h5><i class="bi bi-person me-2"></i>Benutzer: @result.UserId</h5>
                 <p class="mb-0 text-muted">Abgelegt am: @result.Date.ToString("dd.MM.yyyy HH:mm")</p>
             </div>
             <div class="card-body">
